@@ -1,0 +1,7 @@
+OriginAllowedList: ["*","sdfasdf","asdf"]
+MysqlConf:
+  MysqlAddr: "127.0.0.1"
+  MysqlPassword: "123123123"
+RedisConf:
+  RedisAddr: "RedisAddr"
+  RedisPassword: "RedisPassword"
