@@ -1,6 +1,10 @@
 package conf
 
 import (
+	"fmt"
+	"github.com/go-redis/redis/v7"
+	_ "github.com/go-sql-driver/mysql"
+	"github.com/jinzhu/gorm"
 	log "github.com/sirupsen/logrus"
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
@@ -13,7 +17,7 @@ type RedisConf struct {
 }
 type MysqlConf struct {
 	MysqlAddr     string `yaml:"MysqlAddr"`
-	MysqlPassword string `yaml:"MysqlPassword"`
+	//MysqlPassword string `yaml:"MysqlPassword"`
 }
 type Conf struct {
 	OriginAllowedList []string `yaml:"OriginAllowedList"`
@@ -22,7 +26,19 @@ type Conf struct {
 }
 var (
 	SSOConf = &Conf{}
+	RedisClient *redis.Client
+	DB *gorm.DB
 )
+func ExampleNewClient(addr string,password string)(*redis.Client,error) {
+	client := redis.NewClient(&redis.Options{
+		Addr:     addr,
+		Password: password, // no password set
+		DB:       0,  // use default DB
+	})
+	pong, err := client.Ping().Result()
+	fmt.Println(pong, err)
+	return client,err
+}
 func InitConf() error {
 	fileName,_ := filepath.Abs("./conf/conf.yaml")
 	yamlData, err := ioutil.ReadFile(fileName)
@@ -35,5 +51,20 @@ func InitConf() error {
 		log.Fatalf("Fail to unmarshal yaml data,err:%v",err)
 		return err
 	}
+	return nil
+}
+func InitDB()error{
+	var err error
+	RedisClient, err = ExampleNewClient(SSOConf.RedisConf.RedisAddr,SSOConf.RedisConf.RedisPassword)
+	if err != nil {
+		log.Fatalf("fail to init redis client, err:%v",err)
+		return err
+	}
+	db,err := gorm.Open("mysql",SSOConf.MysqlConf.MysqlAddr)
+	if err != nil{
+		log.Fatalf("fail to init mysql client, err: %v",err)
+		return err
+	}
+	DB = db
 	return nil
 }
