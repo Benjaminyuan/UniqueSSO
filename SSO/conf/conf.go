@@ -19,11 +19,17 @@ type MysqlConf struct {
 	MysqlAddr     string `yaml:"MysqlAddr"`
 	//MysqlPassword string `yaml:"MysqlPassword"`
 }
+type RPCConf struct {
+	Addr string `yaml:"addr"`
+}
 type Conf struct {
 	OriginAllowedList []string `yaml:"OriginAllowedList"`
 	MysqlConf MysqlConf `yaml:"MysqlConf"`
 	RedisConf RedisConf `yaml:"RedisConf"`
+	RPCConf RPCConf `yaml:"RPCConf"`
+	MD5Sum string `yaml:"MD5Sum"`
 }
+
 var (
 	SSOConf = &Conf{}
 	RedisClient *redis.Client

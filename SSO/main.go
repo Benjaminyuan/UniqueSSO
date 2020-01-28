@@ -1,8 +1,5 @@
 package main
-
 import (
-	"github.com/gin-contrib/sessions"
-	"github.com/gin-contrib/sessions/redis"
 	"github.com/gin-gonic/gin"
 	log "github.com/sirupsen/logrus"
 	"unique/jedi/conf"
@@ -31,4 +28,5 @@ func main(){
 	r.Use(middleware.Cors())
 	r.Use(middleware.Sessions(session.GlobalSessionManager))
 	r.POST("/signup",controller.SignUp)
+	r.POST("/login",controller.Login)
 }

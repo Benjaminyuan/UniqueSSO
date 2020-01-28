@@ -13,4 +13,18 @@
 * 可配置性
   * 配置可访问的域
   * 数据库的地址和密码
-  * 
+
+### session 管理
+  * session
+    * session的抽象
+  * provider
+    * 提供存储管理
+  * manager
+    * 对外暴露管理session
+### session中间件
+* 检查请求是否带有session，没有跳转login
+* 
+### 注册接口
+    * 表单的形式前后端交互
+    * 后端RPC修改数据
+### 登陆

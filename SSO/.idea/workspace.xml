@@ -1,7 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="08e63e60-9c2b-47e9-8558-2f287d5b7323" name="Default Changelist" comment="" />
+    <list default="true" id="08e63e60-9c2b-47e9-8558-2f287d5b7323" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/codegen.sh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common/const.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common/response.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/protos/gencode/user_center.pb.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/protos/idl/user_center.proto" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rpc/admin.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rpc/user.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/service/user.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/SSO.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/SSO.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/conf/conf.go" beforeDir="false" afterPath="$PROJECT_DIR$/conf/conf.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/conf/conf.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/conf/conf.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controller/login.go" beforeDir="false" afterPath="$PROJECT_DIR$/controller/login.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/session/SessionImp.go" beforeDir="false" afterPath="$PROJECT_DIR$/session/SessionImp.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../architecture/sso_design.md" beforeDir="false" afterPath="$PROJECT_DIR$/../architecture/sso_design.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../user_center/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../user_center/codegen.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../user_center/go.mod" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../user_center/protos/sso/sso.proto" beforeDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -16,10 +39,16 @@
     </option>
   </component>
   <component name="GOROOT" path="/usr/local/Cellar/go/1.13.1/libexec" />
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
   <component name="GoLibraries">
     <option name="indexEntireGoPath" value="false" />
   </component>
   <component name="ProjectId" id="1WBRi4msIEv270Za7kqknRCIr6e" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="PropertiesComponent">
     <property name="DefaultGoTemplateProperty" value="Go File" />
     <property name="WebServerToolWindowFactoryState" value="false" />
@@ -65,6 +94,19 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VgoProject">
     <integration-enabled>true</integration-enabled>

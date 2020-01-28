@@ -2,7 +2,10 @@ OriginAllowedList: ["*","sdfasdf","asdf"]
 MysqlConf:
   MysqlAddr: "root:123456@(localhost:3306)/software?charset=utf8&parseTime=True&loc=Local"
 #  MysqlPassword: ""
-
 RedisConf:
   RedisAddr: "127.0.0.1:6379"
   RedisPassword: ""
+RPCConf:
+  Addr: "localhost:50051"
+MD5Sum: "password"
+

@@ -12,7 +12,7 @@ import (
 )
 
 var (
-	providers map[string]Provider
+	providers = make(map[string]Provider)
 )
 
 type MySession struct {
