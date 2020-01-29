@@ -27,6 +27,8 @@ func main(){
 	r := gin.Default()
 	r.Use(middleware.Cors())
 	r.Use(middleware.Sessions(session.GlobalSessionManager))
+	r.GET("/template/signup",controller.SignUpHTML)
+	r.GET("/template/login",controller.LoginHTML)
 	r.POST("/signup",controller.SignUp)
 	r.POST("/login",controller.Login)
 }

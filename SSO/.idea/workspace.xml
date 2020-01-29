@@ -2,28 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="08e63e60-9c2b-47e9-8558-2f287d5b7323" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/codegen.sh" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/common/const.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/common/response.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/protos/gencode/user_center.pb.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/protos/idl/user_center.proto" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rpc/admin.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rpc/user.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/service/user.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/SSO.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/SSO.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common/session.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/util/encrypt.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/conf/conf.go" beforeDir="false" afterPath="$PROJECT_DIR$/conf/conf.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/conf/conf.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/conf/conf.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/const.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/const.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/controller/login.go" beforeDir="false" afterPath="$PROJECT_DIR$/controller/login.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controller/signup.go" beforeDir="false" afterPath="$PROJECT_DIR$/controller/signup.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/entity/user.go" beforeDir="false" afterPath="$PROJECT_DIR$/entity/user.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/session/SessionImp.go" beforeDir="false" afterPath="$PROJECT_DIR$/session/SessionImp.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../architecture/sso_design.md" beforeDir="false" afterPath="$PROJECT_DIR$/../architecture/sso_design.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../user_center/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../user_center/codegen.sh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../user_center/go.mod" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../user_center/protos/sso/sso.proto" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/rpc/admin.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/user.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/user.go" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -63,6 +51,11 @@
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="settings.editor.selected.configurable" value="com.goide.configuration.GoLibrariesConfigurableProvider" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/common" />
+    </key>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
