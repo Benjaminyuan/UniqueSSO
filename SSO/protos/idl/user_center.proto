@@ -12,7 +12,7 @@ message CommonResponse{
     string info  = 2;
 }
 message HelloRequest{
-   string name = 1;
+    string name = 1;
 }
 message HelloResponse{
     string name = 1;
@@ -28,7 +28,11 @@ message CreateUserResponse{
     UserInfo user = 2;
 }
 message GetUserInfoByIDRequest{
-
+    int64 uid = 1;
+}
+message GetUserInfoByIDResponse{
+    CommonResponse  basic = 1;
+    UserInfo user  = 2;
 }
 message UserInfo{
     int64 uid = 1;
@@ -37,9 +41,7 @@ message UserInfo{
     string college = 4;
     string e_mail = 5;
 }
-message GetUserInfoByIDResponse{
-    UserInfo user  = 1;
-}
+
 message VerifyUserIdentityRequest{
     string UserName =1;
     string Password = 2;

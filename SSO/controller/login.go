@@ -37,5 +37,5 @@ func Login(c *gin.Context){
 }
 
 func LoginHTML(c *gin.Context){
-
+	c.HTML()
 }
