@@ -1,6 +1,7 @@
 package service
 
 import (
+	"context"
 	"errors"
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
@@ -48,4 +49,23 @@ func VerifyUser(c *gin.Context, userName string, password string) (*entity.User,
 		return nil, errors.New(res.Basic.Info)
 	}
 	return &entity.User{UID: res.User.Uid, Name: res.User.Name, Phone: res.User.Phone, EMail: res.User.EMail, College: res.User.EMail}, err
+}
+
+func TestRpc()error{
+	ctx := context.Background()
+	client, err := r.NewUserClient()
+	if err != nil {
+		logrus.Errorf("fail to NewUserClient, err: %v", err)
+		return  err
+	}
+	res, err := client.SayHello(ctx,&pb.HelloRequest{
+		Name:                 "ping",
+	})
+	logrus.Infof("finish ")
+	if err != nil {
+		return err
+	}
+	logrus.Infof("response from hello:%v",res.Name)
+	return nil
+
 }

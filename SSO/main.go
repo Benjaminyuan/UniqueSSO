@@ -5,6 +5,7 @@ import (
 	"unique/jedi/conf"
 	"unique/jedi/controller"
 	"unique/jedi/middleware"
+	"unique/jedi/service"
 	"unique/jedi/session"
 )
 
@@ -24,6 +25,10 @@ func main(){
 	}
 	log.SetLevel(log.DebugLevel)
 	log.Debugf("Conf:%v",*conf.SSOConf)
+	err = service.TestRpc()
+	if err !=nil{
+		log.Fatalf("rpc test failed ,err",err)
+	}
 	r := gin.Default()
 	r.Use(middleware.Cors())
 	r.Use(middleware.Sessions(session.GlobalSessionManager))
@@ -31,4 +36,8 @@ func main(){
 	r.GET("/template/login",controller.LoginHTML)
 	r.POST("/signup",controller.SignUp)
 	r.POST("/login",controller.Login)
+	if err := r.Run();err != nil{
+		log.Errorf("Fail to start the server,err: %v", err)
+	}
+
 }

@@ -20,7 +20,7 @@ type MysqlConf struct {
 	//MysqlPassword string `yaml:"MysqlPassword"`
 }
 type RPCConf struct {
-	Addr string `yaml:"addr"`
+	Addr string `yaml:"Addr"`
 }
 type Conf struct {
 	OriginAllowedList []string `yaml:"OriginAllowedList"`

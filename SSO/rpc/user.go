@@ -51,11 +51,11 @@ func (client *UserClient)VerifyUserIdentity(ctx context.Context,req *pb.VerifyUs
 	return res,nil
 }
 func NewUserClient()(*UserClient,error){
+	log.Infof("addr:%v",conf.SSOConf.RPCConf.Addr)
 	conn, err := grpc.Dial(conf.SSOConf.RPCConf.Addr, grpc.WithInsecure(), grpc.WithBlock())
 	if err != nil {
 		log.Fatalf("did not connect: %v", err)
 		return nil,err
 	}
-	defer conn.Close()
 	return &UserClient{c:pb.NewUserClient(conn)},nil
 }
