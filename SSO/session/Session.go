@@ -5,7 +5,11 @@ import "time"
 const(
 	COOKIE_NAME = "SSO_COOKIE"
 	SID = "sid"
-	DEFAULT_TIMEOUT = 10000
+	DEFAULT_TIMEOUT = 10000000
+	SessionUserNameKey="name"
+	SessionUserEmailKey="e_mail"
+	SessionUserCollegeKey="college"
+	SessionUserUIDKey="uid"
 )
 
 // session类的抽象

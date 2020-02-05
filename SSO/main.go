@@ -1,4 +1,5 @@
 package main
+
 import (
 	"github.com/gin-gonic/gin"
 	log "github.com/sirupsen/logrus"
@@ -31,13 +32,14 @@ func main(){
 	}
 	r := gin.Default()
 	r.Use(middleware.Cors())
-	r.Use(middleware.Sessions(session.GlobalSessionManager))
 	r.GET("/template/signup",controller.SignUpHTML)
 	r.GET("/template/login",controller.LoginHTML)
 	r.POST("/signup",controller.SignUp)
 	r.POST("/login",controller.Login)
+	api := r.Group("/api")
+	api.Use(middleware.Sessions(session.GlobalSessionManager))
+
 	if err := r.Run();err != nil{
 		log.Errorf("Fail to start the server,err: %v", err)
 	}
-
 }

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<script>
+    handleLogin = e =>{
+        e.preventDefault();
+        let name = e.target[0].value;
+        let password = e.target[1].value;
+        let phone = e.target[2].value;
+        let email = e.target[3].value;
+        let college = e.target[4].value;
+        let req = new  XMLHttpRequest();
+        req.open("POST","/signup",true);
+        req.setRequestHeader("Content-Type","application/json");
+        req.onload = function(){
+            console.log(this);
+        };
+        let body = {
+            "name": name,
+            "password": password,
+            "phone" : phone,
+            "e_mail" : email,
+            "college": college
+        };
+        console.log(JSON.stringify(body));
+        req.send(JSON.stringify(body));
+    }
+</script>
+<body>
+<form method="post" onsubmit="handleLogin(event)" >
+    <label>
+        姓名
+        <input name="name" type="text">
+    </label>
+    <label>
+        密码
+        <input name="password" type="password">
+    </label>
+    <label>
+        手机账号
+        <input name="phone" type="text">
+    </label>
+    <label>
+        邮箱
+        <input name="email" type="text">
+    </label>
+    <label>
+        学院
+        <input name="college" type="text">
+    </label>
+    <p>
+        <input type="submit" value="登陆"  >
+    </p>
+</form>
+</body>
+</html>

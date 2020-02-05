@@ -2,16 +2,26 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="08e63e60-9c2b-47e9-8558-2f287d5b7323" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/common/session.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/util/encrypt.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/HTML/login.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/HTML/signup.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/util/ticket.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/common/const.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/const.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/session.go" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/controller/login.go" beforeDir="false" afterPath="$PROJECT_DIR$/controller/login.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/controller/signup.go" beforeDir="false" afterPath="$PROJECT_DIR$/controller/signup.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/entity/user.go" beforeDir="false" afterPath="$PROJECT_DIR$/entity/user.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rpc/admin.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/middleware/session.go" beforeDir="false" afterPath="$PROJECT_DIR$/middleware/session.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/protos/gencode/user_center.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/protos/gencode/user_center.pb.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/protos/idl/user_center.proto" beforeDir="false" afterPath="$PROJECT_DIR$/protos/idl/user_center.proto" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/service/user.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/user.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/session/Session.go" beforeDir="false" afterPath="$PROJECT_DIR$/session/Session.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/session/SessionImp.go" beforeDir="false" afterPath="$PROJECT_DIR$/session/SessionImp.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/util/encrypt.go" beforeDir="false" afterPath="$PROJECT_DIR$/util/encrypt.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/util/uid.go" beforeDir="false" afterPath="$PROJECT_DIR$/util/uid.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../architecture/sso_design.md" beforeDir="false" afterPath="$PROJECT_DIR$/../architecture/sso_design.md" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -22,6 +32,7 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="HTML File" />
         <option value="Go File" />
       </list>
     </option>
@@ -39,6 +50,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="DefaultGoTemplateProperty" value="Go File" />
+    <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/New Scratch File" value="GitIgnore" />
     <property name="configurable.Global.GOPATH.is.expanded" value="true" />

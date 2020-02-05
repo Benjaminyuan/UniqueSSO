@@ -28,3 +28,7 @@
     * 表单的形式前后端交互
     * 后端RPC修改数据
 ### 登陆
+### 关于用于验证的ticket生成和存储问题
+* 利用redix 的setnx机制，保证一致性，
+* 同时使用redis记录ticket同时记录其对应的服务
+* ticket格式 ST-YYYY-MM-DD-ticket_id

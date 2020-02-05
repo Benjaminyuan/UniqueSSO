@@ -11,7 +11,8 @@ import (
 )
 
 func CreateUser(c *gin.Context, user *entity.User)error{
-	req := &pb.CreateUserRequest{Name: user.Name, Phone: user.Phone, EMail: user.EMail, College: user.College}
+	logrus.Debugf("user:%+v",user)
+	req := &pb.CreateUserRequest{Name: user.Name, Phone: user.Phone, EMail: user.EMail, College: user.College,Password:user.Password}
 	client, err := r.NewUserClient()
 	if err != nil {
 		logrus.Errorf("fail to NewUserClient, err: %v", err)
@@ -30,6 +31,7 @@ func CreateUser(c *gin.Context, user *entity.User)error{
 	return nil
 }
 func VerifyUser(c *gin.Context, userName string, password string) (*entity.User, error) {
+
 	req := &pb.VerifyUserIdentityRequest{
 		UserName: userName,
 		Password: password,

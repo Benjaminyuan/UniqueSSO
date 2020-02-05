@@ -22,6 +22,7 @@ message CreateUserRequest{
     string phone = 2;
     string e_mail = 3;
     string college = 4;
+    string password = 5;
 }
 message CreateUserResponse{
     CommonResponse  basic = 1;
