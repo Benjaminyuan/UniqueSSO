@@ -1,0 +1,6 @@
+.vscode/
+
+unique-sso/
+
+*.yaml
+!conf.default.yaml
