@@ -1,4 +1,2 @@
-.idea/*
-go.sum
-.DS_Store
 .vscode/
+.idea/
