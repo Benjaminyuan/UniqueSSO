@@ -1,76 +1,133 @@
 package conf
 
 import (
-	"fmt"
-	"github.com/go-redis/redis/v7"
-	_ "github.com/go-sql-driver/mysql"
-	"github.com/jinzhu/gorm"
-	log "github.com/sirupsen/logrus"
-	"gopkg.in/yaml.v2"
-	"io/ioutil"
-	"path/filepath"
+	"context"
+	"net/url"
+	"regexp"
+	"sync"
+	"time"
+
+	"github.com/go-redis/redis/v8"
+	"github.com/sirupsen/logrus"
+	"github.com/spf13/viper"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
 )
 
-type RedisConf struct {
-	RedisAddr     string `yaml:"RedisAddr"`
-	RedisPassword string `yaml:"RedisPassword"`
-}
-type MysqlConf struct {
-	MysqlAddr     string `yaml:"MysqlAddr"`
-	//MysqlPassword string `yaml:"MysqlPassword"`
-}
-type RPCConf struct {
-	Addr string `yaml:"Addr"`
-}
 type Conf struct {
-	OriginAllowedList []string `yaml:"OriginAllowedList"`
-	MysqlConf MysqlConf `yaml:"MysqlConf"`
-	RedisConf RedisConf `yaml:"RedisConf"`
-	RPCConf RPCConf `yaml:"RPCConf"`
-	MD5Sum string `yaml:"MD5Sum"`
+	Application ApplicationConf `mapstructure:"application"`
+	Database    DatabaseConf    `mapstructure:"database"`
+	Redis       RedisConf       `mapstructure:"redis"`
+	Sms         SmsConf         `mapstructure:"sms"`
+	WorkWx      WorkWxConf      `mapstructure:"work_wx"`
+}
+type ApplicationConf struct {
+	Host            string           `mapstructure:"host"`
+	Port            string           `mapstructure:"port"`
+	Mode            string           `mapstructure:"mode"`
+	ReadTimeout     int              `mapstructure:"read_timeout"`
+	WriteTimeout    int              `mapstructure:"write_timeout"`
+	AllowService    []string         `mapstructure:"allow_service"`
+	AllowServiceReg []*regexp.Regexp `mapstructure:"-"`
+}
+
+type DatabaseConf struct {
+	PostgresDSN string `mapstructure:"postgres_dsn"`
+}
+
+type RedisConf struct {
+	Addr     string `mapstructure:"addr"`
+	Password string `mapstructure:"password"`
+	DB       int    `mapstructure:"db"`
+}
+
+type SmsConf struct {
+	SecretId  string `mapstructure:"secret_id"`
+	SecretKey string `mapstructure:"secret_key"`
+	AppId     string `mapstructure:"app_id"`
+}
+
+type WorkWxConf struct {
+	AppId       string `mapstructure:"app_id"`
+	AgentId     string `mapstructure:"agent_id"`
+	RedirectUri string `mapstructure:"redirect_uri"`
+	CorpId      string `mapstructure:"corpid"`
+	CorpSecret  string `mapstructure:"corpsecret"`
+	AccessToken struct {
+		RWLock sync.RWMutex
+		Token  string
+	} `mapstructure:"-"`
 }
 
 var (
-	SSOConf = &Conf{}
+	SSOConf     = &Conf{}
+	DB          *gorm.DB
 	RedisClient *redis.Client
-	DB *gorm.DB
 )
-func ExampleNewClient(addr string,password string)(*redis.Client,error) {
-	client := redis.NewClient(&redis.Options{
-		Addr:     addr,
-		Password: password, // no password set
-		DB:       0,  // use default DB
-	})
-	pong, err := client.Ping().Result()
-	fmt.Println(pong, err)
-	return client,err
-}
-func InitConf() error {
-	fileName,_ := filepath.Abs("./conf/conf.yaml")
-	yamlData, err := ioutil.ReadFile(fileName)
+
+func InitConf(confFilepath string) error {
+	viper.SetConfigFile(confFilepath)
+	err := viper.ReadInConfig()
 	if err != nil {
-		log.Fatalf("Fail to load yaml file ,err: %v", err)
 		return err
 	}
-	err = yaml.Unmarshal(yamlData,SSOConf)
-	if err != nil{
-		log.Fatalf("Fail to unmarshal yaml data,err:%v",err)
+	err = viper.Unmarshal(SSOConf)
+	if err != nil {
 		return err
 	}
+
+	SSOConf.Application.AllowServiceReg = make([]*regexp.Regexp, len(SSOConf.Application.AllowService))
+	for i, service := range SSOConf.Application.AllowService {
+		reg, err := regexp.Compile(service)
+		if err != nil {
+			return err
+		}
+		SSOConf.Application.AllowServiceReg[i] = reg
+	}
+
+	if SSOConf.Application.Mode == "debug" {
+		logrus.WithField("config", SSOConf).Debug("load config")
+	}
+
+	SSOConf.WorkWx.RedirectUri = url.PathEscape(SSOConf.WorkWx.RedirectUri)
+
 	return nil
 }
-func InitDB()error{
-	var err error
-	RedisClient, err = ExampleNewClient(SSOConf.RedisConf.RedisAddr,SSOConf.RedisConf.RedisPassword)
+
+func InitDB(ctx context.Context) (err error) {
+	// connect postgres
+	db, err := gorm.Open(postgres.New(postgres.Config{
+		DSN: SSOConf.Database.PostgresDSN,
+	}))
 	if err != nil {
-		log.Fatalf("fail to init redis client, err:%v",err)
+		logrus.WithError(err).Error("open gorm error")
 		return err
 	}
-	db,err := gorm.Open("mysql",SSOConf.MysqlConf.MysqlAddr)
-	if err != nil{
-		log.Fatalf("fail to init mysql client, err: %v",err)
-		return err
-	}
+	logrus.Info("conect to postgres success")
 	DB = db
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
+	defer cancel()
+	RedisClient, err = initRedis(ctx)
+	if err != nil {
+		return err
+	}
+
 	return nil
+}
+
+func initRedis(ctx context.Context) (*redis.Client, error) {
+	// init redis
+	rclient := redis.NewClient(&redis.Options{
+		Addr:     SSOConf.Redis.Addr,
+		Password: SSOConf.Redis.Password,
+		DB:       SSOConf.Redis.DB,
+	})
+	pong, err := rclient.Ping(ctx).Result()
+	if err != nil {
+		logrus.WithError(err).Error("ping redis error")
+		return nil, err
+	}
+	logrus.WithField("result", pong).Info("ping redis success")
+	return rclient, nil
 }

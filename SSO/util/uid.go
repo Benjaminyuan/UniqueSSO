@@ -5,7 +5,9 @@ import (
 	//"crypto/rand"
 	//"encoding/base64"
 	"encoding/hex"
+
 	"github.com/google/uuid"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 func GetMD5String(s string) string {
@@ -13,12 +15,12 @@ func GetMD5String(s string) string {
 	h.Write([]byte(s))
 	return hex.EncodeToString(h.Sum(nil))
 }
-func UUID() string{
+
+func UUID() string {
 	uid := uuid.New()
-	return 	uid.String()
-	//b := make([]byte,48)
-	//if _,err := rand.Read(b);err != nil{
-	//	return ""
-	//}
-	//return GetMD5String(base64.URLEncoding.EncodeToString(b))
+	return uid.String()
+}
+
+func GetUUID() string {
+	return primitive.NewObjectID().Hex()
 }

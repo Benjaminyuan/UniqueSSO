@@ -1,13 +1,17 @@
 package util
 
 import (
-	"crypto/md5"
-	"encoding/hex"
+	"golang.org/x/crypto/bcrypt"
 )
 
-func EncryptPassword(password string)string{
-	md5Ctx := md5.New()
-	md5Ctx.Write([]byte(password))
-	//return string(md5Ctx.Sum([]byte(conf.SSOConf.MD5Sum)))
-	return hex.EncodeToString(md5Ctx.Sum(nil))
+func EncryptPassword(password string) (string, error) {
+	bs, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+	if err != nil {
+		return "", err
+	}
+	return string(bs), nil
+}
+
+func ValidatePassword(origin, hashed string) error {
+	return bcrypt.CompareHashAndPassword([]byte(hashed), []byte(origin))
 }
