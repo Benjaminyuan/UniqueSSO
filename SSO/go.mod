@@ -17,6 +17,7 @@ require (
 	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/sms v1.0.238
 	go.mongodb.org/mongo-driver v1.7.1
 	golang.org/x/crypto v0.0.0-20210322153248-0c34fe9e7dc2
+	golang.org/x/net v0.0.0-20210428140749-89ef3d95e781
 	gorm.io/driver/postgres v1.1.0
 	gorm.io/gorm v1.21.12
 	skywalking.apache.org/repo/goapi v0.0.0-20210401062122-a049ca15c62d
