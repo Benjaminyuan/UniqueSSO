@@ -1,0 +1,30 @@
+version: "3.7"
+
+services:
+    uniquesso-back:
+        build: ./SSO
+        volumes:
+            - ./SSO/conf.yaml:/opt/uniquesso-backend/config/settings.yaml
+        ports:
+            - 5000:5000
+        networks:
+            - uniquesso
+            - db_network
+
+    uniquesso-front:
+        build: ./uniquesso-dashboard
+        env_file:
+            - ./uniquesso-dashboard/.env
+        volumes:
+            - ./static/:/opt/uniquesso-dashboard/
+        networks:
+            - uniquesso
+            - db_network
+
+networks:
+    uniquesso:
+        internal: true
+        name: uniquesso
+    db_network:
+        external: true
+        name: db_network

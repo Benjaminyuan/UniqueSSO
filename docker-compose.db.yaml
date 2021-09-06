@@ -1,0 +1,19 @@
+version: "3.7"
+
+services:
+    db:
+        image: postgres:latest
+        container_name: db-postgres
+        restart: always
+        environment:
+            LANG: C.UTF-8
+            POSTGRES_PASSWORD: p@ssw0rd
+        ports:
+            - 5432:5432
+        networks:
+            - db
+
+networks:
+    db:
+        internal: true
+        name: db_network
