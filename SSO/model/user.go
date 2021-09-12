@@ -13,8 +13,8 @@ type User struct {
 	UpdateAt time.Time      `json:"-"`
 	DeleteAt gorm.DeletedAt `json:"-"`
 
-	UID          string          `json:"uid" gorm:"uid;primaryKey"`
-	WorkwxUserId string          `json:"-" gorm:"workwx_user_id;index"`
+	UID          string          `json:"uid" gorm:"column:uid;primaryKey"`
+	WorkwxUserId string          `json:"-" gorm:"column:workwx_user_id;index"`
 	Name         string          `json:"name" gorm:"column:name"`
 	Phone        string          `json:"phone" gorm:"column:phone;index"`
 	EMail        string          `json:"email" gorm:"column:email;index"`

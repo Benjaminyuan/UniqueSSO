@@ -47,13 +47,14 @@ const (
 	WxGetAccessTokenUrl = "https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=%s&corpsecret=%s"
 )
 
-type UserRole string
+type UserRole int
 
 const (
-	ROLE_肿书记  UserRole = "肿书记"
-	ROLE_支部书记 UserRole = "支部书记"
-	ROLE_正式党员 UserRole = "正式党员"
-	ROLE_预备党员 UserRole = "预备党员"
+	ROLE_预备党员 UserRole = 0
+	ROLE_正式党员 UserRole = 1
+	ROLE_支部书记 UserRole = 2
+	ROLE_肿书记  UserRole = 3
+	ROLE_运维   UserRole = 4
 
 	ROLE_DEFAULT UserRole = ROLE_预备党员
 )
