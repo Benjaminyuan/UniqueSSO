@@ -11,11 +11,9 @@ import (
 	"unique/jedi/service"
 	"unique/jedi/util"
 
-	"github.com/SkyAPM/go2sky"
-	"github.com/SkyAPM/go2sky/reporter"
 	"github.com/gin-gonic/gin"
-	"github.com/sirupsen/logrus"
-	"golang.org/x/net/context"
+	"github.com/xylonx/zapx"
+	"go.uber.org/zap"
 )
 
 /*
@@ -46,13 +44,12 @@ import (
 */
 
 func Login(ctx *gin.Context) {
-
-	r, err := reporter.NewGRPCReporter("")
-	t, err := go2sky.NewTracer("", go2sky.WithReporter(r))
-	t.CreateLocalSpan(context.Background())
+	apmCtx, span := util.Tracer.Start(ctx.Request.Context(), "Login")
+	defer span.End()
 
 	signType, ok := ctx.GetQuery("type")
 	if !ok {
+		zapx.WithContext(apmCtx).Error("sign type unsupported", zap.String("type", signType))
 		ctx.JSON(http.StatusBadRequest, pkg.InvalidRequest(errors.New("unsupported login type: "+signType)))
 		return
 	}
@@ -62,12 +59,13 @@ func Login(ctx *gin.Context) {
 	}
 	if redirectUrl, ok := ctx.GetQuery("service"); ok && redirectUrl != "" {
 		if service.VerifyService(redirectUrl) != nil {
+
 			ctx.JSON(http.StatusUnauthorized, pkg.InvalidService(errors.New("unsupported service: "+redirectUrl)))
 			return
 		}
 		ru, err := url.Parse(redirectUrl)
 		if err != nil {
-			logrus.WithField("service", redirectUrl).WithError(err).Error("failed to parse service url")
+			zapx.WithContext(apmCtx).Error("failed to parse redirect url", zap.String("service", redirectUrl))
 			ctx.JSON(http.StatusBadRequest, pkg.InvalidRequest(errors.New("service格式错误")))
 			return
 		}
@@ -76,7 +74,7 @@ func Login(ctx *gin.Context) {
 
 	data := new(pkg.LoginUser)
 	if err := ctx.ShouldBindJSON(data); err != nil {
-		logrus.WithError(err).Error("post body format failed")
+		zapx.WithContext(apmCtx).Error("post body format incorroct", zap.Error(err))
 		ctx.JSON(http.StatusBadRequest, pkg.InvalidRequest(errors.New("上传数据格式错误")))
 		return
 	}
@@ -84,7 +82,7 @@ func Login(ctx *gin.Context) {
 	// validate user
 	user, err := service.VerifyUser(ctx.Request.Context(), data, signType)
 	if err != nil {
-		logrus.WithError(err).Error("validate user failed")
+		zapx.WithContext(apmCtx).Error("validate user failed", zap.Error(err))
 		ctx.JSON(http.StatusUnauthorized, pkg.InvalidTicketSpec(err))
 		return
 	}
@@ -92,7 +90,7 @@ func Login(ctx *gin.Context) {
 	// new ticket, store and set cookie
 	tgt := util.NewTGT()
 	if err := service.StoreValue(ctx.Request.Context(), tgt, user.UID, common.CAS_TGT_EXPIRES); err != nil {
-		logrus.WithError(err).Error("store tgt failed")
+		zapx.WithContext(apmCtx).Error("store tgt failed", zap.Error(err))
 		ctx.JSON(http.StatusInternalServerError, pkg.InternalError(errors.New("服务器错误，请稍后尝试")))
 		return
 	}
@@ -100,7 +98,7 @@ func Login(ctx *gin.Context) {
 
 	ticket := util.NewTicket()
 	if err := service.StoreValue(ctx.Request.Context(), ticket, user.UID, common.CAS_TICKET_EXPIRES); err != nil {
-		logrus.WithError(err).Error("store ticket failed")
+		zapx.WithContext(apmCtx).Error("store ticket failed", zap.Error(err))
 		ctx.JSON(http.StatusInternalServerError, pkg.InternalError(errors.New("服务器错误，请稍后尝试")))
 		return
 	}
@@ -108,10 +106,10 @@ func Login(ctx *gin.Context) {
 	query := target.Query()
 	query.Set("ticket", ticket)
 	target.RawQuery = query.Encode()
-	ctx.JSON(http.StatusOK, pkg.RedirectSuccess(target.String()))
 
-	// FIXME
-	logrus.Info("function return")
+	// append token
+
+	ctx.Redirect(http.StatusFound, target.String())
 }
 
 // TODO: construct a watcher to implement logout function
@@ -119,11 +117,9 @@ func Logout(ctx *gin.Context) {
 
 }
 
-func Register(ctx *gin.Context) {
-
-}
-
 func GetWorkWxQRCode(ctx *gin.Context) {
+	apmCtx, span := util.Tracer.Start(ctx.Request.Context(), "GetWorkWxQRCode")
+	defer span.End()
 	if conf.SSOConf.Application.Mode == "debug" {
 		src := "https://open.work.weixin.qq.com/wwopen/sso/qrImg?key=2d2287cf9cc95a8"
 		ctx.JSON(http.StatusOK, pkg.QrcodeSuccess(src))
@@ -132,7 +128,7 @@ func GetWorkWxQRCode(ctx *gin.Context) {
 
 	src, err := util.GetQRCodeSrc()
 	if err != nil {
-		logrus.WithError(err).Error("get work wx qrcode failed")
+		zapx.WithContext(apmCtx).Error("get work wxQRCode failed", zap.Error(err))
 		ctx.JSON(http.StatusInternalServerError, pkg.InternalError(errors.New("获取二维码错误")))
 		return
 	}
