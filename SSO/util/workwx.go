@@ -16,6 +16,8 @@ import (
 
 	"github.com/gocolly/colly/v2"
 	"github.com/sirupsen/logrus"
+	"github.com/xylonx/zapx"
+	"go.uber.org/zap"
 )
 
 const (
@@ -66,7 +68,11 @@ func GetQRCodeSrc() (string, error) {
 	visitUrl := fmt.Sprintf(qrWebFmt,
 		conf.SSOConf.WorkWx.AppId,
 		conf.SSOConf.WorkWx.AgentId,
-		conf.SSOConf.WorkWx.RedirectUri)
+		conf.SSOConf.WorkWx.RedirectUri,
+	)
+	l, _ := zap.NewProduction()
+	zapx.Use(l, nil)
+	zapx.Info("visit work wx", zap.String("url", visitUrl))
 	err := collector.Visit(visitUrl)
 	if err != nil {
 		return "", err

@@ -1,30 +1,42 @@
 package util
 
 import (
-	"github.com/SkyAPM/go2sky"
-	"github.com/SkyAPM/go2sky/reporter"
-	"github.com/sirupsen/logrus"
+	"context"
+	"unique/jedi/conf"
+
+	"go.opentelemetry.io/otel"
+	"go.opentelemetry.io/otel/attribute"
+	"go.opentelemetry.io/otel/exporters/jaeger"
+	"go.opentelemetry.io/otel/sdk/resource"
+	sdktrace "go.opentelemetry.io/otel/sdk/trace"
+	semconv "go.opentelemetry.io/otel/semconv/v1.4.0"
+	"go.opentelemetry.io/otel/trace"
 )
 
 var (
-	SkyReporter go2sky.Reporter
-	Tracer      *go2sky.Tracer
+	Tracer trace.Tracer
 )
 
-func SetupAPM() (err error) {
-	// set up skywalking apm
-	SkyReporter, err = reporter.NewGRPCReporter("192.168.0.230:11800")
+func SetupTracing() (func(ctx context.Context) error, error) {
+	// Create the Jaeger exporter
+	exp, err := jaeger.New(jaeger.WithCollectorEndpoint(jaeger.WithEndpoint(conf.SSOConf.APM.ReporterBackground)))
 	if err != nil {
-		logrus.WithError(err).Error("init skywalking reporter failed")
-		return err
+		return nil, err
 	}
-	logrus.Info("init skywalking reporter success")
+	tp := sdktrace.NewTracerProvider(
+		// Always be sure to batch in production.
+		sdktrace.WithBatcher(exp),
+		// Record information about this application in an Resource.
+		sdktrace.WithResource(resource.NewWithAttributes(
+			semconv.SchemaURL,
+			semconv.ServiceNameKey.String(conf.SSOConf.Application.Name),
+			attribute.String("environment", conf.SSOConf.Application.Mode),
+		)),
+	)
 
-	Tracer, err = go2sky.NewTracer("UniqueSSO", go2sky.WithReporter(SkyReporter))
-	if err != nil {
-		logrus.WithError(err).Error("init skywalking tracer failed")
-		return err
-	}
-
-	return nil
+	otel.SetTracerProvider(tp)
+	Tracer = otel.GetTracerProvider().Tracer(conf.SSOConf.Application.Name)
+	return func(ctx context.Context) error {
+		return tp.Shutdown(ctx)
+	}, nil
 }
