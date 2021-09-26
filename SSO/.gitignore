@@ -5,3 +5,5 @@ unique-sso
 
 *.yaml
 !conf.default.yaml
+
+*.proto
