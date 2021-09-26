@@ -2,7 +2,7 @@ FROM golang:latest AS builder
 
 WORKDIR /app/
 
-COPY . /app/
+COPY . .
 
 RUN go env -w GO111MODULE=on && \
     go env -w GOPROXY="https://goproxy.cn,direct" && \
@@ -15,9 +15,9 @@ LABEL maintainer="xylonx"
 ARG PROJECT_NAME="uniquesso-backend"
 WORKDIR /opt/${PROJECT_NAME}
 
-COPY --from=0 /build ./${PROJECT_NAME}
+COPY --from=0 /app/main ./${PROJECT_NAME}
 RUN mkdir config && \
-    echo "./$PROJECT_NAME server -c=config/settings.yaml" >>start.sh && \
+    echo "./${PROJECT_NAME} server -c=settings.yaml" >>start.sh && \
     chmod 755 -R /opt/$PROJECT_NAME
 
 CMD ./start.sh
