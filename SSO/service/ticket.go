@@ -5,18 +5,19 @@ import (
 	"errors"
 	"time"
 	"unique/jedi/conf"
+	"unique/jedi/database"
 )
 
 func StoreValue(ctx context.Context, key, value string, expires time.Duration) error {
-	return conf.RedisClient.Set(ctx, key, value, expires).Err()
+	return database.RedisClient.Set(ctx, key, value, expires).Err()
 }
 
 func GetValue(ctx context.Context, key string) (string, error) {
-	return conf.RedisClient.Get(ctx, key).Result()
+	return database.RedisClient.Get(ctx, key).Result()
 }
 
 func GetDelValue(ctx context.Context, key string) (string, error) {
-	return conf.RedisClient.GetDel(ctx, key).Result()
+	return database.RedisClient.GetDel(ctx, key).Result()
 }
 
 func VerifyService(service string) error {
