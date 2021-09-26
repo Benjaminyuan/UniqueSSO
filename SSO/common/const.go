@@ -32,6 +32,10 @@ const (
 )
 
 const (
+	SMS_TEMPO_CODE = "verificationCode"
+)
+
+const (
 	ZHANG_XIAO_LONG = "SB"
 )
 
